@@ -1,0 +1,10 @@
+{
+  "foodKind": {
+    "foodKind|16": [
+      {
+        "imgUrl": "@dataImage('50x50')",
+        "name": "'@cword(4)'"
+      }
+    ]
+  }
+}
