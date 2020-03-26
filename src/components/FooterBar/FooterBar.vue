@@ -36,7 +36,7 @@ export default {
   display flex
   justify-content space-around
   align-items center
-  background-color rgba(36, 55, 73, 0.24)
+  background-color rgb(36, 55, 73, 0.24)
   .nav_item
     width 25%
     display flex
@@ -54,5 +54,5 @@ export default {
       margin-top 2px
       font-size 24px
     &.on
-      color green
+      color #dfdfdf
 </style>

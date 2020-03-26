@@ -17,7 +17,7 @@
           <div class="swiper-pagination" slot="pagination"></div>
         </swiper>
       </div>
-      <ShopList></ShopList>
+      <ShopList :fixed="fixed"></ShopList>
     </div>
 </template>
 
@@ -37,6 +37,7 @@ export default {
   },
   data () {
     return {
+      fixed: false,
       foodKindInfoBc: [],
       swiperOptions: {
         pagination: {
@@ -61,7 +62,7 @@ export default {
     }
   },
   mounted () {
-
+    window.addEventListener('scroll', this.menu, true)
   },
   methods: {
     arrayCopy (arr0) {
@@ -81,6 +82,14 @@ export default {
         }
       })
       return arr2
+    },
+    menu (eve) {
+      if (eve.target.scrollTop > 205) {
+        this.fixed = true
+      }
+      if (eve.target.scrollTop < 205) {
+        this.fixed = false
+      }
     }
   }
 }
@@ -89,6 +98,8 @@ export default {
 <style lang="stylus" rel="stylesheet/stylus">
 .food_home
   height 100%
+  overflow scroll
+  background-color #f0f0f0
   .login_register
     margin-right 5px
   .sousuo_icon
@@ -96,7 +107,7 @@ export default {
   .mySwiper
     margin-top 10px
     padding 10px 0 20px
-    background-color lightgoldenrodyellow
+    background-color white
     .slide_item
       display flex
       flex-wrap wrap
@@ -105,6 +116,7 @@ export default {
         flex-direction column
         justify-content space-around
         align-items center
+        margin-top 10px
         width 25%
         img
           border-radius 50%

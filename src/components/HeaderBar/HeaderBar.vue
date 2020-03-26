@@ -14,12 +14,16 @@ export default {
 
 <style lang="stylus" rel="stylesheet/stylus">
 .header_bar
-  position relative
+  position fixed
+  top 0
   display flex
   justify-content space-between
   align-items center
+  width 100%
   height 50px
-  background-color rgba(36, 55, 73, 0.24)
+  color gray
+  background-color rgb(36, 55, 73)
+  z-index 9
   .page_title
     position absolute
     top 50%

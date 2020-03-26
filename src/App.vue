@@ -12,6 +12,7 @@ export default {
   components: {FooterBar},
   mounted () {
     this.$store.dispatch('getFoodKindInfo')
+    this.$store.dispatch('getShopList')
   }
 }
 </script>
@@ -19,6 +20,8 @@ export default {
 <style lang="stylus" rel="stylesheet/stylus">
   #app
     position relative
+    box-sizing border-box
     width 100%
     height 100%
+    padding-top 50px
 </style>

@@ -5,3 +5,5 @@ import ajax from './ajax'
 // export const reqShopInfo = () => ajax('/shopInfo')
 
 export const reqFoodKindInfo = () => ajax('/foodKindInfo')
+
+export const reqShopList = () => ajax('/shopList')
