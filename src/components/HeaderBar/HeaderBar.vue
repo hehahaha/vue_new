@@ -21,7 +21,7 @@ export default {
   align-items center
   width 100%
   height 50px
-  color gray
+  color #dfdfdf
   background-color rgb(36, 55, 73)
   z-index 9
   .page_title

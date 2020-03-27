@@ -1,4 +1,5 @@
 export default {
   foodKindInfo: [],
-  shopList: []
+  shopList: [],
+  shopListItem: []
 }

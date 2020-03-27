@@ -14,7 +14,7 @@
           </span>
         </div>
       </div>
-      <div class="shops" :class="{'fixed_shops': fixed}">
+      <div class="shops">
         <div class="shop_item" v-for="(value, index) in shopListOl" :key="index">
           <div class="item_img">
             <img :src="value.shopImage">
@@ -63,24 +63,25 @@ export default {
     return {
       compareType: [ // 店家排序的类型
         'ranking' // 默认评分排序
-      ]
+      ],
+      shopList02: []
     }
   },
   computed: {
-    ...mapState(['shopList']),
+    ...mapState(['shopList', 'shopListItem']),
     shopListOl () {
       let flag = 0
-      let arr2 = this.shopList
-      console.log(Array.isArray(this.shopList))
-      let arr = arr2.sort((s1, s2) => {
-        if (this.compareType[2]) {
-          flag = this.compare(this.compareType[2], s1, s2)
-        }
-        if (this.compareType[1]) {
-          flag = this.compare(this.compareType[1], s1, s2)
-        }
-        if (this.compareType[0]) {
-          flag = this.compare(this.compareType[0], s1, s2)
+      let arr3 = this.compareType
+      let arr2 = this.shopList02
+      let arr = arr2.sort((s1, s2) => { // 从上往下比较如果上面有相等的则往下
+        if (arr3[0]) {
+          flag = this.compare(arr3[0], s1, s2)
+          if (flag === 0 && arr3[1]) {
+            flag = this.compare(arr3[1], s1, s2)
+            if (flag === 0 && arr3[2]) {
+              flag = this.compare(arr3[2], s1, s2)
+            }
+          }
         } else {
           flag = this.compare('ranking', s1, s2)
         }
@@ -97,20 +98,28 @@ export default {
         return s2.ranking - s1.ranking
       }
       if (str === 'xiao_liang') {
-        return s2.xiao_liang - s1.ranking
+        return s2.xiao_liang - s1.xiao_liang
       }
       if (str === 'pei_song_ju_li') {
         return s1.pei_song_ju_li - s2.pei_song_ju_li
       }
     },
     addType (type) {
-      console.log(type, this.compareType.indexOf(type))
       if (this.compareType.indexOf(type) + 1) {
         this.compareType.splice(this.compareType.indexOf(type), 1)
       } else {
         this.compareType.push(type)
       }
-      console.log(this.compareType)
+    }
+  },
+  watch: {
+    shopListItem (v) {
+      this.shopList02 = this.shopList02.concat(v)
+      // console.log(this.shopList02)
+      this.$emit('shopListLoaded')
+    },
+    shopList (v) {
+      this.shopList02 = v
     }
   }
 }
@@ -119,11 +128,12 @@ export default {
 <style lang="stylus" rel="stylesheet/stylus">
 .shop_list
   width 100%
+  margin-top 10px
   margin-bottom 50px
   padding-top 0
   background-color white
   &.fixed
-    padding-top 71px
+    padding-top 53px
   .shop_list_head
     width 100%
     background-color white
@@ -134,7 +144,7 @@ export default {
       padding-bottom 5px
       z-index 9
     .title
-      margin 10px 10px 5px
+      margin 0px 10px 5px
     .rank_item
       display flex
       align-items center

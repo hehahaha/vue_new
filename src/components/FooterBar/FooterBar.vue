@@ -1,18 +1,18 @@
 <template>
     <div class="footer_bar">
-      <router-link class="nav_item on" to="/foodHome">
+      <router-link class="nav_item" to="/foodHome" :class="{'on': $route.path === '/foodHome'}">
         <i class="iconfont icon-waimai"></i>
         <a class="item_font on">外 卖</a>
       </router-link>
-      <router-link class="nav_item" to="/search">
+      <router-link class="nav_item" to="/search" :class="{'on': $route.path === '/search'}">
         <i class="iconfont icon-sousuo1"></i>
         <a class="item_font">搜 索</a>
       </router-link>
-      <router-link class="nav_item" to="/order">
+      <router-link class="nav_item" to="/order" :class="{'on': $route.path === '/order'}">
         <i class="iconfont icon-dingdan"></i>
         <a class="item_font">订 单</a>
       </router-link>
-      <router-link class="nav_item" to="/myCenter">
+      <router-link class="nav_item" to="/myCenter" :class="{'on': $route.path === '/myCenter'}">
         <i class="iconfont icon-wode"></i>
         <a class="item_font">个 人</a>
       </router-link>
@@ -27,7 +27,7 @@ export default {
 
 <style lang="stylus" rel="stylesheet/stylus">
 .footer_bar
-  position absolute
+  position fixed
   bottom 0
   left 0
   right 0

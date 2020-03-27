@@ -1,6 +1,7 @@
 import {
   FOOD_KIND_INFO,
-  SHOP_LIST
+  SHOP_LIST,
+  SHOP_LIST_ITEM
 } from './mutation-types'
 
 export default {
@@ -9,5 +10,8 @@ export default {
   },
   [SHOP_LIST] (state, {shopList}) {
     state.shopList = shopList
+  },
+  [SHOP_LIST_ITEM] (state, {shopList}) {
+    state.shopListItem = shopList
   }
 }

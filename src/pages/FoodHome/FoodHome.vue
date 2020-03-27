@@ -1,5 +1,5 @@
 <template>
-    <div class="food_home">
+    <div ref='food_home' class="food_home" :class="tranStyle">
       <HeaderBar>
         <div class="login_register" slot="right">登录|注册</div>
         <div class="sousuo_icon" slot="left">
@@ -17,7 +17,7 @@
           <div class="swiper-pagination" slot="pagination"></div>
         </swiper>
       </div>
-      <ShopList :fixed="fixed"></ShopList>
+      <ShopList @shopListLoaded="reqCode0=false" ref="shop_list" :fixed="fixed"></ShopList>
     </div>
 </template>
 
@@ -38,6 +38,12 @@ export default {
   data () {
     return {
       fixed: false,
+      tranStyle: '',
+      eleFoodHome: {}, // food_home 元素
+      reqCode0: false,
+      mouseYmove: 0,
+      mouseYstart: 0,
+      mouseYend: true,
       foodKindInfoBc: [],
       swiperOptions: {
         pagination: {
@@ -62,7 +68,19 @@ export default {
     }
   },
   mounted () {
+    this.$nextTick(() => {
+      this.eleFoodHome = document.getElementsByClassName('food_home')[0]
+    })
+    // 事件解绑
+    window.removeEventListener('scroll', this.menu)
+    window.removeEventListener('touchstart', this.pullPageA)
+    window.removeEventListener('touchmove', this.pullPageB)
+    window.removeEventListener('touchend', this.pullPageC)
+    // 绑定事件
     window.addEventListener('scroll', this.menu, true)
+    window.addEventListener('touchstart', this.pullPageA)
+    window.addEventListener('touchmove', this.pullPageB)
+    window.addEventListener('touchend', this.pullPageC)
   },
   methods: {
     arrayCopy (arr0) {
@@ -73,7 +91,7 @@ export default {
         for (let key in arr) {
           obj1[key] = arr[key]
         }
-        obj1.name = obj1.name.substring(1, obj1.name.length - 1)
+        obj1.name = obj1.name.substring(1, obj1.name.length - 1) // 去除首尾引号
         arr1.push(obj1)
         obj1 = {}
         if (arr1.length === 8 || i === arr0.length - 1) {
@@ -83,14 +101,69 @@ export default {
       })
       return arr2
     },
-    menu (eve) {
+    menu (eve) { // 滚动条事件监听
+      console.log(this.reqCode0)
+      let scrollN = eve.target.scrollHeight - eve.target.scrollTop
+      if ((!eve.target.scrollTop || scrollN === 617) && Math.abs(this.mouseYmove) < 80) {
+        window.removeEventListener('touchmove', this.pullPageB)
+        window.addEventListener('touchmove', this.pullPageB)
+      } else {
+        window.removeEventListener('touchmove', this.pullPageB)
+      }
+      // 控制 head 吸附
       if (eve.target.scrollTop > 205) {
         this.fixed = true
       }
       if (eve.target.scrollTop < 205) {
         this.fixed = false
       }
+      if (scrollN < 717 && !this.reqCode0) {
+        this.reqCode0 = true
+        this.$store.dispatch('getShopListItem')
+      }
+    },
+    pullPageA (ev) { // 获取第一次触摸点
+      if (ev.target.scrollTop === 0) {
+        window.removeEventListener('touchmove', this.pullPageB)
+        window.addEventListener('touchmove', this.pullPageB)
+      }
+      this.mouseYstart = ev.touches[0].pageY
+    },
+    pullPageB (e) {
+      this.tranStyle = ''
+      this.mouseYmove = e.touches[0].pageY - this.mouseYstart
+      if (this.mouseYmove > 0) {
+        this.eleFoodHome.style.paddingTop = this.mouseYmove + 'px'
+      } else {
+        this.eleFoodHome.style.paddingBottom = -this.mouseYmove + 'px'
+      }
+      if (Math.abs(this.mouseYmove) > 60) {
+        console.log(this.mouseYmove)
+        window.removeEventListener('touchmove', this.pullPageB)
+        setTimeout(() => {
+          this.tranStyle = 'transtn_b'
+          this.eleFoodHome.style.padding = 0 + 'px'
+        }, 500)
+      }
+    },
+    pullPageC (e) {
+      window.removeEventListener('touchmove', this.pullPageB)
+      if (Math.abs(this.mouseYmove) > 60) {
+        setTimeout(() => {
+          this.tranStyle = 'transtn_b'
+          this.eleFoodHome.style.padding = 0 + 'px'
+        }, 1000)
+      } else {
+        this.tranStyle = 'transtn_b'
+        this.eleFoodHome.style.padding = 0 + 'px'
+      }
     }
+  },
+  beforeDestroy () {
+    window.removeEventListener('scroll', this.menu)
+    window.removeEventListener('touchstart', this.pullPageA)
+    window.removeEventListener('touchmove', this.pullPageB)
+    window.removeEventListener('touchend', this.pullPageC)
   }
 }
 </script>
@@ -100,6 +173,10 @@ export default {
   height 100%
   overflow scroll
   background-color #f0f0f0
+  &.transtn_a
+    transition padding 800ms
+  &.transtn_b
+    transition padding 500ms
   .login_register
     margin-right 5px
   .sousuo_icon
