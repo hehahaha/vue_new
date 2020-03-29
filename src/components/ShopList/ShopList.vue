@@ -91,6 +91,7 @@ export default {
     }
   },
   mounted () {
+    this.shopList02 = this.shopList
   },
   methods: {
     compare (str, s1, s2) { // 根据 str 排序
@@ -115,7 +116,7 @@ export default {
   watch: {
     shopListItem (v) {
       this.shopList02 = this.shopList02.concat(v)
-      // console.log(this.shopList02)
+      console.log(this.shopList02)
       this.$emit('shopListLoaded')
     },
     shopList (v) {

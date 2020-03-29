@@ -1,10 +1,10 @@
 <template>
     <div ref='food_home' class="food_home" :class="tranStyle">
-      <HeaderBar>
-        <div class="login_register" slot="right">登录|注册</div>
-        <div class="sousuo_icon" slot="left">
-          <i class="iconfont icon-sousuo1"></i>
-        </div>
+      <HeaderBar title="HeaderBar">
+<!--        <div class="login_register" slot="right">登录|注册</div>-->
+<!--        <div class="sousuo_icon" slot="left">-->
+<!--          <i class="iconfont icon-sousuo1"></i>-->
+<!--        </div>-->
       </HeaderBar>
       <div class="food_kind" v-if="foodKindInfoB">
         <swiper ref="mySwiper" class="mySwiper" :options="swiperOptions">
@@ -34,6 +34,10 @@ export default {
     HeaderBar,
     Swiper,
     SwiperSlide
+
+    // git config --global user.name "username"
+    // git config --global user.email "email"
+
   },
   data () {
     return {
@@ -50,7 +54,7 @@ export default {
           el: '.swiper-pagination'
         },
         autoplay: {
-          delay: 1000,
+          delay: 3000,
           stopOnLastSlide: false,
           disableOnInteraction: true
         }
@@ -141,6 +145,7 @@ export default {
         console.log(this.mouseYmove)
         window.removeEventListener('touchmove', this.pullPageB)
         setTimeout(() => {
+          this.$store.dispatch('getFoodKindInfo')
           this.tranStyle = 'transtn_b'
           this.eleFoodHome.style.padding = 0 + 'px'
         }, 500)

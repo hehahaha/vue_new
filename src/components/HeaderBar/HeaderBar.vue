@@ -1,14 +1,15 @@
 <template>
     <div class="header_bar">
       <slot name="left"></slot>
-      <h3 class="page_title">HeaderBar</h3>
+      <h3 class="page_title">{{title}}</h3>
       <slot name="right"></slot>
     </div>
 </template>
 
 <script>
 export default {
-  name: 'HeaderBar'
+  name: 'HeaderBar',
+  props: ['title']
 }
 </script>
 
